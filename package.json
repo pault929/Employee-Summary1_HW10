@@ -1,0 +1,19 @@
+{
+  "name": "employee-summary1_hw10",
+  "version": "1.0.0",
+  "description": "Homework 10 -  Employee Summary",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pault929/Employee-Summary1_HW10.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pault929/Employee-Summary1_HW10/issues"
+  },
+  "homepage": "https://github.com/pault929/Employee-Summary1_HW10#readme"
+}
