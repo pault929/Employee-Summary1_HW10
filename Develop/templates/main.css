@@ -1,0 +1,11 @@
+body{
+    background-color: red;
+    color: white;
+    font-family: 'Goldman', cursive;
+}
+
+
+.jumbotron{
+    background-color:rgb(206, 138, 75) !important;
+    color: black;
+}

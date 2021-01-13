@@ -1,70 +1,83 @@
 // TODO: Write code to define and export the Intern class.  HINT: This class should inherit from Employee.
-const fs = require("fs");
-const path = require("path");
 const inquirer = require("inquirer");
-const generateMarkdown = require("./utils/generateMarkdown");
+const fs = require("fs");
+const util = require("util");
 
-const questions = [
-  {
-    type: "input",
-    name: "github",
-    message: "What is your GitHub username?",
-  },
-  {
-    type: "input",
-    name: "email",
-    message: "What is your email address?",
-  },
-  {
-    type: "input",
-    name: "title",
-    message: "What is your project's name?",
-  },
-  {
-    type: "input",
-    name: "description",
-    message: "Please write a short description of your project",
-  },
-  {
-    type: "list",
-    name: "license",
-    message: "What kind of license should your project have?",
-    choices: ["MIT", "APACHE 2.0", "GPL 3.0", "BSD 3", "None"],
-  },
-  {
-    type: "input",
-    name: "installation",
-    message: "What command should be run to install dependencies?",
-    default: "npm i",
-  },
-  {
-    type: "input",
-    name: "test",
-    message: "What command should be run to run tests?",
-    default: "npm test",
-  },
-  {
-    type: "input",
-    name: "usage",
-    message: "What does the user need to know about using the repo?",
-  },
-  {
-    type: "input",
-    name: "contributing",
-    message: "What does the user need to know about contributing to the repo?",
-  },
-];
+const writeFileAsync = util.promisify(fs.writeFile);
 
-function writeToFile(fileName, data) {
-  return fs.writeFileSync(path.join(process.cwd(), fileName), data);
+function promptUser() {
+  return inquirer.prompt([
+    {
+      type: "input",
+      name: "name",
+      message: "Please enter your name."
+    },
+    {
+      type: "list",
+      name: "role",
+      message: "What is your Role? ",
+      choices: ["Manager", "Engineer", "Intern"],
+    },
+    {
+      type: "input",
+      name: "id",
+      message: "Please enetr your ID."
+    },
+    {
+      type: "input",
+      name: "email",
+      message: "Enter your Email Address."
+    },
+    {
+      type: "input",
+      name: "school",
+      message: "Enter your School Name."
+    },
+  
+  
+  
+  
+  ]);
 }
 
-function init() {
-  inquirer.prompt(questions).then((inquirerResponses) => {
-    console.log(inquirerResponses);
-    console.log("Generating README...");
-    writeToFile("README.md", generateMarkdown({ ...inquirerResponses }));
+function generateHTML(answers) {
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+<div class="card employee-card">
+<div class="card-header">
+    <h2 class="card-title">${answer.name}</h2>
+    <h3 class="card-title"><i class="fas fa-user-graduate mr-2"></i>${answer.role}</h3>
+</div>
+<div class="card-body">
+    <ul class="list-group">
+        <li class="list-group-item">ID: ${answer.id }</li>
+        <li class="list-group-item">Email: <a href="mailto:${answer.email}">${answer.email}</a></li>
+        <li class="list-group-item">School:${answer.school}</li>
+    </ul>
+</div>
+</div>
+
+ </body>
+</html>`;
+}
+
+promptUser()
+  .then(function(answers) {
+    const html = generateHTML(answers);
+
+    return writeFileAsync("read.md", html);
+  })
+  .then(function() {
+    console.log("Great Job, Please visit Git hub link to check out new READ ME file!");
+  })
+  .catch(function(err) {
+    console.log(err);
   });
-}
-
-init();
